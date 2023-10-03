@@ -50,3 +50,10 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# Custom
+output_b_transpose.txt
+output_d.txt
+
+# macOS
+.DS_Store
