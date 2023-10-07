@@ -1,39 +1,103 @@
 #include "function.h"
 
-void fast_transpose(term b[],term b_transpose[]){
+// --------------------------------------------------------------
+void fast_sparse_transpose(term b[],term b_transpose[]){
 
     /* the transpose of b is placed in b_transpose */
 
-	int32_t row_terms[MAX_TERMS], starting_pos[MAX_TERMS];
+    /*
+        +------+-----+-----+-------+
+        |   b  | row | col | value |
+        +------+-----+-----+-------+
+        | b[0] |  6  |  6  |   8   |
+        | b[1] |  0  |  0  |   15  |
+        | b[2] |  0  |  3  |   22  |
+        | b[3] |  0  |  5  |   -15 |
+        | b[4] |  1  |  1  |   11  |
+        | b[5] |  1  |  2  |   3   |
+        | b[6] |  2  |  3  |   -6  |
+        | b[7] |  4  |  0  |   91  |
+        | b[8] |  5  |  2  |   28  |
+        +------+-----+-----+-------+
+
+        +-----+-----------+-----------------------+
+        |  i  | row_terms | starting_row_position |
+        +-----+-----------+-----------------------+
+        |  0  |     2     |           1           |
+        |  1  |     1     |           3           |
+        |  2  |     2     |           4           |
+        |  3  |     2     |           6           |
+        |  4  |     0     |           8           |
+        |  5  |     1     |           8           |
+        +-----+-----------+-----------------------+
+    
+    */
+
+	int32_t row_terms[MAX_TERMS]    = {0};
+    int32_t starting_pos[MAX_TERMS] = {0};
 
     int32_t num_rows  = b[0].row;
     int32_t num_cols  = b[0].col;
     int32_t num_terms = b[0].value;
 
-	b_transpose[0].row = num_cols;
-    b_transpose[0].col = num_rows;
+	b_transpose[0].row   = num_cols;
+    b_transpose[0].col   = num_rows;
 	b_transpose[0].value = num_terms;
 
 	if(num_terms > 0){
-		for(int32_t i = 0; i < num_cols; i++){
-			row_terms[i] = 0;
-		}
+
+        /* The reset in the original book is moved to the definition. */
+		// for(int32_t i = 0; i < num_cols; i++)
+		//     row_terms[i] = 0;
+
+        /* calculate the amount of row_terms */
 		for(int32_t i = 1; i <= num_terms; i++){
 			row_terms[b[i].col]++;
 		}
+
+        /* calculate the starting position of each row */
 		starting_pos[0] = 1;
 		for(int32_t i = 1; i < num_cols; i++){
 			starting_pos[i] = starting_pos[i-1] + row_terms[i-1];
 		}
+
+        /* transpose the matrix */
+        int32_t j = 0;
 		for(int32_t i = 1; i <= num_terms; i++){
-			int32_t j = starting_pos[b[i].col]++;
+			j = starting_pos[b[i].col]++;
 			b_transpose[j].row   = b[i].col;
             b_transpose[j].col   = b[i].row;
 			b_transpose[j].value = b[i].value;
 		}
+
+        /* visualize b */
+        printf( "┌-------------------------------------┐\n"
+                "|   b   |  row  |  col  |    value    |\n"
+                "|-------+-------+-------+-------------|\n");
+        for(int32_t i = 0; i <= b[0].value; i++)
+            printf("| %5d |  %3d  |  %3d  |  %10d |\n", i, b[i].row, b[i].col, b[i].value);
+        printf( "└-------------------------------------┘\n\n");
+
+        /* visualize row_terms */
+        printf( "┌-------------------------------------------┐\n"
+                "|   b   | row_terms | starting_row_position |\n"
+                "|-------+-----------+-----------------------|\n");
+        for(int32_t i = 0; i < num_cols; i++)
+            printf("| %5d |  %7d  |           %d           |\n", i, row_terms[i], starting_pos[i]);
+        printf( "└-------------------------------------------┘\n\n");
+
+        /* visualize b_transpose */
+        printf( "┌-------------------------------------┐\n"
+                "|  b_tr |  row  |  col  |    value    |\n"
+                "|-------+-------+-------+-------------|\n");
+        for(int32_t i = 0; i <= b_transpose[0].value; i++)
+            printf("| %5d |  %3d  |  %3d  |  %10d |\n", i, b_transpose[i].row, b_transpose[i].col, b_transpose[i].value);
+        printf( "└-------------------------------------┘\n\n");
+
 	}
 }
 
+// --------------------------------------------------------------
 void store_sum(term d[], int32_t *totald, int32_t row, int32_t column, int32_t *sum){
 
     /* if *sum != 0, then it along with its row and 
@@ -52,7 +116,7 @@ void store_sum(term d[], int32_t *totald, int32_t row, int32_t column, int32_t *
         }
     }
 }
-
+// --------------------------------------------------------------
 void mmult(term a[], term b[], term d[]){
 
     /* multiply two sparse matrices a and b, and store the result in d */
@@ -69,7 +133,7 @@ void mmult(term a[], term b[], term d[]){
         exit(1);
     }
 
-    fast_transpose(b, b_transpose);
+    fast_sparse_transpose(b, b_transpose);
 
     /* set boundary condition */
     a[totala+1].row = rows_a;

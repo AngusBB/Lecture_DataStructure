@@ -54,6 +54,10 @@ dkms.conf
 # Custom
 output_b_transpose.txt
 output_d.txt
+*.json
+sparse_matrix_transpose
+sparse_matrix_multiply
+
 
 # macOS
 .DS_Store

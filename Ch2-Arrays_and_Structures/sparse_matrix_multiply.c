@@ -1,16 +1,14 @@
-/* implentation of sparse matrix multiplication */ 
+/* implementation of sparse matrix multiplication */ 
 
 #include "function.h"
 
 int main(){
 	FILE *input_a;
     FILE *input_b;
-    FILE *output_b_transpose;
 	FILE *output_d;
 
 	term a[MAX_TERMS];
     term b[MAX_TERMS];
-    term b_transpose[MAX_TERMS];
     term d[MAX_TERMS];
 
     {
@@ -40,25 +38,29 @@ int main(){
         }
     }
 
-    fast_transpose(b, b_transpose);
+    /* visualize a */
+    printf( "┌-------------------------------------┐\n"
+            "|   a   |  row  |  col  |    value    |\n"
+            "|-------+-------+-------+-------------|\n");
+    for(int32_t i = 0; i <= a[0].value; i++)
+        printf("| %5d |  %3d  |  %3d  |  %10d |\n", i, a[i].row, a[i].col, a[i].value);
+    printf( "└-------------------------------------┘\n\n");
 
 	mmult(a, b, d);
 
-    {
-        output_b_transpose = fopen("output_b_transpose.txt", "w+");
-        if(output_b_transpose == NULL){
-            printf("open output_b_transpose.txt file failed!\n");
-            exit(0);
-        }        
+    /* visualize d */
+    printf( "┌-------------------------------------┐\n"
+            "|   d   |  row  |  col  |    value    |\n"
+            "|-------+-------+-------+-------------|\n");
+    for(int32_t i = 0; i <= d[0].value; i++)
+        printf("| %5d |  %3d  |  %3d  |  %10d |\n", i, d[i].row, d[i].col, d[i].value);
+    printf( "└-------------------------------------┘\n\n");
 
+    {
         output_d = fopen("output_d.txt", "w+"); 
         if(output_d == NULL){
             printf("open output_d.txt file failed!\n");
             exit(0);
-        }
-
-        for(int32_t i = 0; i <= b_transpose[0].value; i++){
-            fprintf(output_b_transpose, "%d %d %d\n", b_transpose[i].row, b_transpose[i].col, b_transpose[i].value);
         }
 
         for(int32_t i = 0; i <= d[0].value; i++){
@@ -68,7 +70,6 @@ int main(){
     
 	fclose(input_a);
     fclose(input_b);
-    fclose(output_b_transpose);
     fclose(output_d);
 
     return 0;

@@ -12,7 +12,7 @@ typedef struct{
 } term;
 
 // Program 2.8
-void fast_transpose(term a[],term b[]);
+void fast_sparse_transpose(term a[],term b[]);
 
 // Program 2.10
 void store_sum(term d[], int32_t *totald, int32_t row, int32_t column, int32_t *sum);
