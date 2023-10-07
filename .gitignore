@@ -58,6 +58,5 @@ output_d.txt
 sparse_matrix_transpose
 sparse_matrix_multiply
 
-
 # macOS
 .DS_Store
