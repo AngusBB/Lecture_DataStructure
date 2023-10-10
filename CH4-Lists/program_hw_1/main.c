@@ -43,9 +43,8 @@ int main(){
                     mvwprintw(winTERMINAL, 2, 1, "No more space for new polynomial!");
                     wrefresh(winTERMINAL);
                     noecho();
-
-                    clean_message(0);
                 }
+                clean_message(0);
 
                 break;
             case 1: // Display Specfic Coefficient

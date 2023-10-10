@@ -57,6 +57,7 @@ output_d.txt
 *.json
 sparse_matrix_transpose
 sparse_matrix_multiply
+*.docx
 
 # macOS
 .DS_Store

@@ -31,8 +31,6 @@ Node *create_polynomial(Node *Head){
 
     clean_zero_coefficient(&Head);
 
-    clean_message(1);
-
     return Head;
 }
 // ==============================================================================================================================
@@ -157,7 +155,7 @@ void print_polynomial(Node *Head, int32_t intOffset, WINDOW *win){
 
         Node *temp = Head;
         while (temp != NULL){
-            mvwprintw(win, 1 + intOffset, 10 + intTerm * 11, "%.1fx^%d", temp->floatCoefficient, temp->intExponent);
+            mvwprintw(win, 1 + intOffset, 15 + intTerm * 11, "%.1fx^%d", temp->floatCoefficient, temp->intExponent);
             intTerm++;
             temp = temp->ptr_Next;
 
@@ -213,11 +211,11 @@ Node *add_polynomial(Node *Head1, Node *Head2, float floatSign){
                 temp1 = temp1->ptr_Next;
             }
             else if (temp1->intExponent < temp2->intExponent){
-                Head3 = insert_node(Head3, floatSign * temp2->floatCoefficient, temp2->intExponent); //TODO: fix this
+                Head3 = insert_node(Head3, floatSign * temp2->floatCoefficient, temp2->intExponent);
                 temp2 = temp2->ptr_Next;
             }
             else {
-                Head3 = insert_node(Head3, temp1->floatCoefficient + floatSign * temp2->floatCoefficient, temp1->intExponent); //TODO: fix this
+                Head3 = insert_node(Head3, temp1->floatCoefficient + floatSign * temp2->floatCoefficient, temp1->intExponent);
                 temp1 = temp1->ptr_Next;
                 temp2 = temp2->ptr_Next;
             }
@@ -229,7 +227,7 @@ Node *add_polynomial(Node *Head1, Node *Head2, float floatSign){
         }
     
         while (temp2 != NULL){
-            Head3 = insert_node(Head3, floatSign * temp2->floatCoefficient, temp2->intExponent); //TODO: fix this
+            Head3 = insert_node(Head3, floatSign * temp2->floatCoefficient, temp2->intExponent);
             temp2 = temp2->ptr_Next;
         }
 

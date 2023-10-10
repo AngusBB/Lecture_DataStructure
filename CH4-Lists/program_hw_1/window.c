@@ -67,7 +67,6 @@ void initialize_window() {
     refresh();
 }
 // ==============================================================================================================================
-// ==============================================================================================================================
 /* Usage
     const char *tempMessage[1] = {"text"};
     print_message(tempMessage, 1, 0);
@@ -117,13 +116,13 @@ int32_t menu_select() {
     int32_t intChoiceSize = 9;
     char *ptr_strChoice[9] = {\
     "1. Input New Polynomial",\
-    "2. Display Specfic Coefficient",\
-    "3. Add a term to the polynomial",\
-    "4. Remove a specified exponent",\
-    "5. Add two polynomials",\
-    "6. Minus two polynomials",\
-    "7. Multiply two polynomials",\
-    "8. Divide two polynomials",\
+    "2. Display Specific Coefficient",\
+    "3. Add a Term to the Polynomial",\
+    "4. Remove a Specific Exponent",\
+    "5. Add Two Polynomials",\
+    "6. Minus Two Polynomials",\
+    "7. Multiply Two polynomials",\
+    "8. Divide Two Polynomials",\
     "9. Quit"};
 
 
