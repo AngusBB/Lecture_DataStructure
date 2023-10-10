@@ -34,4 +34,4 @@ The answer should save in output_b_transpsoe.txt and visualize on terminal.
 ```bash
 ./sparse_matrix_multiplication
 ```
-The answer should save in output_cd.txt and visualize on terminal.
+The answer should save in output_d.txt and visualize on terminal.
