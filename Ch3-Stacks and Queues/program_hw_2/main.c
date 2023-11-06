@@ -107,18 +107,9 @@ int main() {
 
     print_word(&stack, 0);
 
-    // Loops for the user to enter the actions
     while (1) {
-
-        printf("Wait 3 seconds to continue...\n");
-        sleep(1);
-        
-        printf("Wait 2 seconds to continue...\n");
-        sleep(1);
-        
         printf("Wait 1 seconds to continue...\n");
         sleep(1);
-
         system("clear");
 
         print_word(&stack, 1);
@@ -127,20 +118,12 @@ int main() {
         printf("--------------------------------------------------------------------------------------------------------------------------------------------------\n");
         printf("Please enter an action (a/A~z/Z, space) Add word, (0) Delete word, (1) Move cursor left, (2) Move cursor right, (3) Undo, (4) Redo, (esc) Exit: ");
 
-        // Clear any existing input in the buffer
         int ch;
         while ((ch = getchar()) != '\n' && ch != EOF);
 
         action = getchar();
-
-        // print_word(&stack, 1);
-
         if (isalpha(action) || action == ' ') {
-            // Add word logic
             printf("Adding word...\n");
-
-            // print_word(&stack, 1);
-
             strcpy(temp_String, get_word(&stack));
             cursor = get_cursor(&stack);
             if (cursor == stack.wordsSize[stack.top]) {
@@ -155,46 +138,27 @@ int main() {
             }
             push(&stack, temp_String);
             stack.cursor[stack.top] = cursor + 1;
-
-            // print_word(&stack, 2);
-
             redo = 0;
         }
         else {
-            // For other actions
             switch (action) {
                 case '0':
-                    // Delete word logic
                     printf("Deleting word...\n");
-
-                    // print_word(&stack, 1);
-
                     cursor = get_cursor(&stack);
                     if (cursor == 0) {
                         printf("Cursor is at the beginning of the string!\n");
                         break;
                     }
                     strcpy(temp_String, get_word(&stack));
-
-
-                    for (int i = cursor - 1; i < stack.wordsSize[stack.top] - 1; ++i) {
+                    for (int i = cursor - 1; i < stack.wordsSize[stack.top] - 1; ++i)
                         temp_String[i] = temp_String[i + 1];
-                    }
                     temp_String[stack.wordsSize[stack.top] - 1] = '\0';
                     push(&stack, temp_String);
                     stack.cursor[stack.top] = cursor - 1;
-
-                    // print_word(&stack, 2);
-
                     redo = 0;
-
                     break;
                 case '1':
-                    // Move cursor left logic
                     printf("Moving cursor left...\n");
-
-                    // print_word(&stack, 1);
-
                     strcpy(temp_String, get_word(&stack));
                     cursor = get_cursor(&stack);
                     push(&stack, temp_String);
@@ -202,18 +166,10 @@ int main() {
                         stack.cursor[stack.top] = 0;
                     else
                         stack.cursor[stack.top] = cursor - 1;
-
-                    // print_word(&stack, 2);
-
                     redo = 0;
-
                     break;
                 case '2':
-                    // Move cursor right logic
                     printf("Moving cursor right...\n");
-
-                    // print_word(&stack, 1);
-
                     strcpy(temp_String, get_word(&stack));
                     cursor = get_cursor(&stack);
                     push(&stack, temp_String);
@@ -221,56 +177,32 @@ int main() {
                         stack.cursor[stack.top] = cursor + 1;
                     else
                         stack.cursor[stack.top] = cursor;
-
-                    // print_word(&stack, 2);
-
                     redo = 0;
-
                     break;
                 case '3':
-                    // Undo logic
                     printf("Undoing...\n");
-
-                    // print_word(&stack, 1);
-
                     if (stack.top == 0) {
                         printf("No more undo...\n");
                         break;
                     }
                     stack.top--;
-
-                    // print_word(&stack, 2);
-
                     redo++;
-                    // printf("redo: %d\n", redo);
-
                     break;
                 case '4':
-                    // Redo logic
                     printf("Redoing...\n");
-
-                    // print_word(&stack, 1);
-                    
                     if (redo == 0) {
                         printf("No more redo...\n");
                         break;
                     }
                     stack.top++;
-
-                    // print_word(&stack, 2);
-
                     redo--;
-
                     break;
                 default:
                     printf("exit...\n");
-
                     return 0;
             }
         }
-
         print_word(&stack, 2);
     }
-
     return 0;
 }
